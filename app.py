@@ -64,7 +64,7 @@ col1, col2 = st.columns(2)
 with col1:
     bedrooms = st.slider("🛏️ Number of Bedrooms", 1, 10, 3)
     area = st.number_input("📐 Area (in square feet)", min_value=300, max_value=10000, value=1800)
-    garage = st.radio("🚗 Garage Available", ("Yes", "No"))
+   
     
 with col2:
     bathrooms = st.slider("🛁 Number of Bathrooms", 1, 10, 2)
@@ -79,7 +79,8 @@ if st.button("🔮 Predict House Price"):
     
     try:
         prediction = model.predict(features)[0]
-       st.markdown(f"<div class='result-box'>💰 Estimated Price: ₹{max(0, prediction):,.0f}</div>", unsafe_allow_html=True)
+        prediction = max(0, prediction)  # prevent negative
+        st.markdown(f"<div class='result-box'>💰 Estimated Price: ₹{prediction:,.0f}</div>", unsafe_allow_html=True)
     except Exception as e:
         st.error(f"Prediction failed: {str(e)}")
 
