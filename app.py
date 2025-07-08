@@ -80,7 +80,7 @@ if st.button("🔮 Predict House Price"):
     try:
         prediction = model.predict(features)[0]
         prediction = max(0, prediction)  # prevent negative
-        st.markdown(f"<div class='result-box'>💰 Estimated Price: ₹{prediction:,.0f}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='result-box'>💰 Estimated Price: ${prediction:,.0f}</div>", unsafe_allow_html=True)
     except Exception as e:
         st.error(f"Prediction failed: {str(e)}")
 
