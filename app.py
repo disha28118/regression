@@ -1,4 +1,4 @@
-# app.py – House Price Prediction App (USD, non-negative output)
+# app.py – House Price Prediction App (USD Only)
 
 import streamlit as st
 import joblib
@@ -7,7 +7,7 @@ import numpy as np
 # Load the trained model
 model = joblib.load("model/house_price_model.pkl")
 
-# Set page config
+# Page configuration
 st.set_page_config(page_title="🏠 House Price Estimator", page_icon="💰", layout="centered")
 
 # Custom CSS Styling
@@ -45,41 +45,42 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Title and header
+# Title Section
 st.markdown("<div class='main-container'>", unsafe_allow_html=True)
-st.markdown("<h1>🏡 House Price Predictor (USD)</h1>", unsafe_allow_html=True)
-st.markdown("### Enter house details below:")
+st.markdown("<h1>🏡 House Price Predictor</h1>", unsafe_allow_html=True)
+st.markdown("### Enter the property details to estimate its price (in USD):")
 
-# Input form
+# Input Fields
 col1, col2 = st.columns(2)
 
 with col1:
     bedrooms = st.slider("🛏️ Number of Bedrooms", 1, 10, 3)
-    area = st.number_input("📐 Area (sqft)", min_value=300, max_value=10000, value=1800)
-
+    area = st.number_input("📐 Area (in square feet)", min_value=300, max_value=10000, value=1800)
 
 with col2:
     bathrooms = st.slider("🛁 Number of Bathrooms", 1, 10, 2)
-    age = st.slider("🏗️ House Age (years)", 0, 100, 20)
-  
+    age = st.slider("🏗️ Age of the House (in years)", 0, 100, 20)
 
-# Predict and display
+# Prediction Logic
 if st.button("🔮 Predict House Price"):
     features = np.array([[bedrooms, bathrooms, area, age]])
-    
+
     try:
         prediction = model.predict(features)[0]
 
-        # Ensure output is always > 0
-        prediction = max(10000, prediction)  # set a minimum realistic floor value
+        # Ensure non-negative and realistic value
+        prediction_usd = max(10000, prediction)  # Floor set to $10,000
 
         st.markdown(
-            f"<div class='result-box'>💰 Estimated Price: <strong>${prediction:,.2f}</strong></div>",
+            f"<div class='result-box'>💰 Estimated Price: <strong>${prediction_usd:,.2f}</strong></div>",
             unsafe_allow_html=True
         )
+
     except Exception as e:
         st.error(f"Prediction failed: {str(e)}")
 
-# Footer
+# Close container div
 st.markdown("</div>", unsafe_allow_html=True)
-st.markdown("<div class='footer'>✨ Designed by Disha Gupta | Streamlit App</div>", unsafe_allow_html=True)
+
+# Footer
+st.markdown("<div class='footer'>✨ Designed by Disha Gupta | Streamlit App 2025</div>", unsafe_allow_html=True)
